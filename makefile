@@ -7,11 +7,12 @@ HIPFLAGS=-arch=sm_86 --disable-warnings
 DST=convolution2D.out
 SRC=$(wildcard *.cpp *.h)
 
-
-all: ${DST}
+all: clean ${DST}
 
 ${DST}: ${SRC}
 	${HIPCC} ${CXXFLAGS} ${HIPFLAGS} -o $@ ${SRC}
 
+.PHONY: clean
 clean:
 	rm -f *.out *.o
+	echo Clean done

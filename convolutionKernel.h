@@ -13,5 +13,8 @@ static void gpuWarmUp(){
 }
 
 void convolution2DNaiveHip(float* src, float* dst, float* kernel, int iw, int ih, int kw, int kh);
+void convolution2DSepHip(float* src, float* dst, float* rowKernel, float* colKernel, int iw, int ih, int kw, int kh);
 
 __global__ void convolution2DNaiveHipKernel(float* dSrc, float* dDst, float* dKernel, int iw, int ih, int kw, int kh);
+__global__ void convolution2DSepColHipKernel(float* dSrc, float* dDst, float* dKernel, int iw, int ih, int kh);
+__global__ void convolution2DSepRowHipKernel(float* dSrc, float* dDst, float* dKernel, int iw, int ih, int kw);

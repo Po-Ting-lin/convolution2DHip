@@ -11,17 +11,18 @@ static void getRandomImage(float* src, int width, int height) {
     }
 }
 
-static void getGaussianKernel2D(float* kernel, int width, double sigma) {
-    double mean = (int)(width / 2);
+static void getGaussianKernel2D(float* kernel, int width, int height, double sigma) {
+    const double w_mean = (int)(width / 2);
+    const double h_mean = (int)(height / 2);
     float sum = 0.0f;
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < width; ++y) {
-            kernel[y * width + x] = gaussian(y, mean, sigma) * gaussian(x, mean, sigma);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            kernel[y * width + x] = gaussian(y, h_mean, sigma) * gaussian(x, w_mean, sigma);
             sum += kernel[y * width + x];
         }
     }
-    for (int x = 0; x < width; ++x) {
-        for (int y = 0; y < width; ++y) {
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
             kernel[y * width + x] /= sum;
         }
     }

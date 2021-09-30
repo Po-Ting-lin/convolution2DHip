@@ -157,10 +157,10 @@ void convolution2DFFTW(float* src, float* dst, float* kernel, int iWidth, int iH
 
 const char* checkCorrectness(float* testSrc, float* ref, int iWidth, int iHeight) {
     const float episilon = 1e-4;
-    const char* result = "true";
+    const char* result = "Pass";
     for (int i = 0; i < iWidth * iHeight; i++) {
         if (abs(ref[i] - testSrc[i]) > episilon) {
-            result = "false";
+            result = "Fail";
             break;
         }
     }

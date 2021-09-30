@@ -35,17 +35,16 @@ int main() {
     getGaussianKernel2D(row_kernel, kernel_width, 1, sigma);
     getGaussianKernel2D(col_kernel, kernel_height, 1, sigma);
     
+    // prepare ref_image for testing
     convolution2DOpencv(src_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     
-
-
     const int repeat_times = 10;
-    testFunction("opencv convolution", repeat_times, convolution2DOpencv, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);   
-    testFunction("naive convolution", 1, convolution2DNaive, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("navie MP convolution", repeat_times, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("navie GPU convolution", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction2("sep GPU convolution", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
-    testFunction("fftw convolution", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Opencv convolution", repeat_times, convolution2DOpencv, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);   
+    testFunction("Naive convolution", 1, convolution2DNaive, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Naive MP convolution", repeat_times, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("FFTW convolution", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Navie GPU convolution", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction2("Seperable GPU convolution", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
     
     //for (int i = 0; i < 10; i++) {
     //    //printf("%f\n", dst_image[50 + i + width * 50]);

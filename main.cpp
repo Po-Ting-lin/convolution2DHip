@@ -44,14 +44,15 @@ int main() {
     testFunction("Naive MP convolution", repeat_times, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     testFunction("FFTW convolution", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     testFunction("Navie GPU convolution", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction2("Seperable GPU convolution", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
+    //testFunction2("Seperable GPU convolution", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
+    testFunction2("Seperable Const GPU convolution", repeat_times, convolution2DSepConstHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
     
     //for (int i = 0; i < 10; i++) {
     //    //printf("%f\n", dst_image[50 + i + width * 50]);
     //    printf("%f\n", dst_image[i]);
     //}
     //printf("\n");
-
+    gpuReset();
     delete[] kernel;
     delete[] row_kernel;
     delete[] col_kernel;

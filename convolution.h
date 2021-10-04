@@ -7,4 +7,3 @@ void convolution2DOpencv(float* src, float* dst, float* kernel, int iWidth, int 
 void convolution2DNaive(float* src, float* dst, float* kernel, int iWidth, int iHeight, int kWidth, int kHeight);
 void convolution2DNaiveMp(float* src, float* dst, float* kernel, int iWidth, int iHeight, int kWidth, int kHeight);
 void convolution2DFFTW(float* src, float* dst, float* kernel, int iWidth, int iHeight, int kWidth, int kHeight);
-const char* checkCorrectness(float* testSrc, float* ref, int iWidth, int iHeight);

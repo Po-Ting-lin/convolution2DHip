@@ -3,6 +3,19 @@
 #include "timer.h"
 #include "utils.h"
 
+static const char* checkCorrectness(float* testSrc, float* ref, int iWidth, int iHeight) {
+    const float episilon = 1e-4;
+    const char* result = "Pass";
+    for (int i = 0; i < iWidth * iHeight; i++) {
+        if (abs(ref[i] - testSrc[i]) > episilon) {
+            result = "Fail";
+            printf("x: %d, y: %d\n", i % iWidth, i / iWidth);
+	    //break;
+        }
+    }
+    return result;
+}
+
 template<typename F>
 void testFunction(const char* name, int repeatTime, F func, float* src, float* dst, float* ref, float* kernel, int iWidth, int iHeight, int kWidth, int kHeight) {
     printf("%s: %.4f ms (average %d times)\n", name, funcTime(repeatTime, func, src, dst, kernel, iWidth, iHeight, kWidth, kHeight), repeatTime);
@@ -18,10 +31,10 @@ void testFunction2(const char* name, int repeatTime, F func, float* src, float* 
 
 int main() {
     gpuWarmUp();
-    const int width = 1000;
-    const int height = 200;
-    const int kernel_width = 31;
-    const int kernel_height = 31;
+    const int width = 1024;
+    const int height = 256;
+    const int kernel_width = 11;
+    const int kernel_height = 11;
     const double sigma = 5;
 
     float* kernel = new float[kernel_width * kernel_height];
@@ -38,20 +51,24 @@ int main() {
     // prepare ref_image for testing
     convolution2DOpencv(src_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     
-    const int repeat_times = 10;
-    testFunction("Opencv convolution", repeat_times, convolution2DOpencv, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);   
-    testFunction("Naive convolution", 1, convolution2DNaive, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("Naive MP convolution", repeat_times, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("FFTW convolution", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("Navie GPU convolution", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    //testFunction2("Seperable GPU convolution", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
-    testFunction2("Seperable Const GPU convolution", repeat_times, convolution2DSepConstHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
+    const int repeat_times = 1;
+    testFunction("Opencv conv", repeat_times, convolution2DOpencv, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);   
+    testFunction("Naive conv", 1, convolution2DNaive, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Naive MP conv", repeat_times, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("FFTW conv", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Navie GPU conv", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction2("Seperable GPU conv", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
+    testFunction2("Seperable Const GPU conv", repeat_times, convolution2DSepConstHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
+
+    assertGPUParameters(width, height, kernel_width, kernel_height);
+
+    testFunction2("Seperable Const Smem GPU conv", repeat_times, convolution2DSepConstSmemHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
     
-    //for (int i = 0; i < 10; i++) {
-    //    //printf("%f\n", dst_image[50 + i + width * 50]);
-    //    printf("%f\n", dst_image[i]);
-    //}
-    //printf("\n");
+    for (int i = 0; i < 10; i++) {
+        //printf("pred: %f; ref: %f\n", dst_image[500 + i + width * 220], ref_image[500 + i + width * 220]);
+        //printf("pred: %f; ref: %f\n", dst_image[i], ref_image[i]);
+    }
+    printf("\n");
     gpuReset();
     delete[] kernel;
     delete[] row_kernel;

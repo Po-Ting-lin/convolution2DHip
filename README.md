@@ -1,4 +1,4 @@
-# HoleFilling
+# Convolution 2D
 
 ### Introduction
 Implementation of convolution in different optimizations. GPU code implemented in Heterogeneous-Computing Interface for Portability (HIP), which is a C++ Runtime API and Kernel Language that allows developers to create portable applications for AMD and NVIDIA GPUs from single source code. 

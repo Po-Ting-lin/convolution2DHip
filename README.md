@@ -1,12 +1,12 @@
 # Convolution 2D
 
 ### Introduction
-Implementation of convolution in different optimizations. GPU code implemented in Heterogeneous-Computing Interface for Portability (HIP), which is a C++ Runtime API and Kernel Language that allows developers to create portable applications for AMD and NVIDIA GPUs from single source code. 
+Implementation of convolution in different ways. GPU code implemented in Heterogeneous-Computing Interface for Portability (HIP), which is a C++ Runtime API and Kernel Language that allows us to apply on AMD and NVIDIA GPUs from single source code. 
 
 
 ### Test   
-* random matrix: 1024 * 1024
-* gaussain kernel: 31 * 31
+* Random matrix: 1024 * 1024
+* Gaussain kernel: 31 * 31
 * Border: BORDER_REFLECT (fedcba|abcdefgh|hgfedcb)
 * All of the methods validated by opencv filter2D.   
 ```

@@ -50,10 +50,10 @@ int main() {
     // prepare ref_image for testing
     convolution2DOpencv(src_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     
-    const int repeat_times = 50;
+    const int repeat_times = 1;
     testFunction("Opencv conv", repeat_times, convolution2DOpencv, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);   
     testFunction("Naive conv", 1, convolution2DNaive, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
-    testFunction("Naive MP conv", 10, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
+    testFunction("Naive MP conv", 1, convolution2DNaiveMp, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     testFunction("FFTW conv", repeat_times, convolution2DFFTW, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     testFunction("Navie GPU conv", repeat_times, convolution2DNaiveHip, src_image, dst_image, ref_image, kernel, width, height, kernel_width, kernel_height);
     testFunction2("Seperable GPU conv", repeat_times, convolution2DSepHip, src_image, dst_image, ref_image, row_kernel, col_kernel, width, height, kernel_width, kernel_height);
